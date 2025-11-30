@@ -2,6 +2,7 @@ package com.railway.reservation.controller;
 
 import com.railway.reservation.model.Booking;
 import com.railway.reservation.service.InMemoryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -17,11 +18,18 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public Booking book(@RequestBody Map<String, String> request) {
-        String trainId = request.get("trainId");
-        String passengerName = request.get("passenger");
-        int seats = Integer.parseInt(request.get("seats"));
+    public ResponseEntity<?> book(@RequestBody Map<String, Object> request) {
+        try {
+            String trainId = (String) request.get("trainId");
+            String passenger = (String) request.get("passenger");
+            int seats = Integer.parseInt(request.get("seats").toString());
 
-        return service.bookTicket(trainId, passengerName, seats);
+            Booking booking = service.bookTicket(trainId, passenger, seats);
+            return ResponseEntity.ok(booking);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid request data");
+        }
     }
 }

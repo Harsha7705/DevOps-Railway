@@ -82,6 +82,13 @@
                     const trainId = btn.getAttribute('data-id');
                     const passenger = prompt("Enter passenger name:");
                     const seats = prompt("Enter number of seats:");
+					const seatsNum = parseInt(seats, 10);
+					if (isNaN(seatsNum) || seatsNum < 1) {
+					    alert("Invalid number of seats!");
+					    return;
+					}
+					body: JSON.stringify({ trainId, passenger, seats: seatsNum })
+
 
                     if (!passenger || !seats) return;
 

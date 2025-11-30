@@ -3,7 +3,6 @@ package com.railway.reservation.model;
 import java.util.UUID;
 
 public class Booking {
-
     private String bookingId;
     private String trainId;
     private String passengerName;
@@ -21,10 +20,8 @@ public class Booking {
     public String getBookingId() { return bookingId; }
     public String getTrainId() { return trainId; }
     public void setTrainId(String trainId) { this.trainId = trainId; }
-
     public String getPassengerName() { return passengerName; }
     public void setPassengerName(String passengerName) { this.passengerName = passengerName; }
-
     public int getSeatsBooked() { return seatsBooked; }
     public void setSeatsBooked(int seatsBooked) { this.seatsBooked = seatsBooked; }
 }

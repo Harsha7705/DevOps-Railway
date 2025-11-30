@@ -9,35 +9,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WebController {
+
     private final InMemoryService service;
 
     public WebController(InMemoryService service) {
         this.service = service;
     }
 
-    // Homepage showing all trains
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("trains", service.getAllTrains());
-        return "index"; // index.html in templates
+        return "index";
     }
 
-    // Booking page with form
     @GetMapping("/booking")
     public String bookingPage(Model model) {
         model.addAttribute("trains", service.getAllTrains());
-        return "booking"; // booking.html in templates
+        return "booking";
     }
 
-    // Handle booking form submission
     @PostMapping("/book")
     public String bookTicket(@RequestParam String trainId,
                              @RequestParam String passenger,
                              @RequestParam int seats,
                              Model model) {
-        service.bookTicket(trainId, passenger, seats);
-        model.addAttribute("message", "Ticket booked successfully!");
+        try {
+            service.bookTicket(trainId, passenger, seats);
+            model.addAttribute("message", "Ticket booked successfully!");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("message", "Booking failed: " + e.getMessage());
+        }
         model.addAttribute("trains", service.getAllTrains());
-        return "index"; // Return to home page with updated seats
+        return "index";
     }
 }

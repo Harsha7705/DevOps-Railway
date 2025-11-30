@@ -2,6 +2,5 @@ com\railway\reservation\model\Train.class
 com\railway\reservation\RailwayApplication.class
 com\railway\reservation\controller\WebController.class
 com\railway\reservation\service\InMemoryService.class
-com\railway\reservation\controller\TrainController.class
 com\railway\reservation\model\Booking.class
 com\railway\reservation\controller\BookingController.class
