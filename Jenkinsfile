@@ -2,51 +2,43 @@ pipeline {
     agent any
 
     tools {
-        // Make sure these names match the ones configured in Jenkins under "Global Tool Configuration"
-        jdk 'Java21'
-        maven 'Maven3'
-    }
-
-    environment {
-        // Optional: Add JAVA_HOME if needed
-        JAVA_HOME = "${tool 'Java21'}"
-        PATH = "${tool 'Maven3'}/bin:${env.PATH}"
+        maven 'Maven3'      // Jenkins → Global Tools → Maven installation name
+        jdk 'Java21'  
+        git 'GitDefault' // Jenkins → JDK installation name
     }
 
     stages {
+
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Harsha7705/Railway-System.git'
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                // Clean and package the Maven project
-                bat 'mvn clean package -DskipTests'
+                sh 'mvn -B clean compile'
             }
         }
 
-        stage('Test') {
+        stage('Run Tests') {
             steps {
-                bat 'mvn test'
+                sh 'mvn -B test'
             }
-        }
-
-        stage('Run') {
-            steps {
-                // Run the generated jar file
-                bat 'java -jar target/railway-reservation-1.0.0.jar'
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
             }
         }
     }
 
     post {
         success {
-            echo '✅ Build, tests, and run succeeded!'
+            echo 'Build & Tests passed. Pipeline green.'
         }
         failure {
-            echo '❌ Build, tests, or run failed!'
+            echo 'Pipeline failed. Fix the issues and re-run.'
         }
     }
 }
