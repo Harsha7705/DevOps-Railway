@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven3'      // Jenkins → Global Tools → Maven installation name
-        jdk 'Java21'  
-        git 'GitDefault' // Jenkins → JDK installation name
+        maven 'Maven3'     
+        jdk 'Java21'        
     }
 
     stages {
@@ -17,13 +16,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn -B clean compile'
+                bat 'mvn -B clean compile'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'mvn -B test'
+                bat 'mvn -B test'
             }
             post {
                 always {
