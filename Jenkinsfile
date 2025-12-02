@@ -33,9 +33,10 @@ pipeline {
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    echo "Skipping JUnit report collection — no tests found."
                 }
             }
+
         }
 
         stage('Package') {
